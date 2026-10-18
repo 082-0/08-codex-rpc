@@ -1,0 +1,36 @@
+{
+  "name": "eight-codex-rpc",
+  "version": "1.0.2",
+  "private": true,
+  "description": "08 Discord Rich Presence for Codex Desktop and CLI",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.js",
+    "build:win": "electron-builder --win portable --x64"
+  },
+  "devDependencies": {
+    "electron": "44.9.0",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "dev.eight.codexrpc",
+    "productName": "08 Codex RPC",
+    "artifactName": "08-Codex-RPC-${version}-portable.${ext}",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "icon": "assets/08.ico",
+      "target": "portable"
+    },
+    "portable": {
+      "requestExecutionLevel": "user"
+    }
+  }
+}

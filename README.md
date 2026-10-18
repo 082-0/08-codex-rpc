@@ -1,2 +1,102 @@
-# 08-codex-rpc
-08-branded Codex Rich Presence for Discord. A pure-black Windows app with live chat, model, and reasoning-level updates.
+<div align="center">
+  <img src="assets/08.png" width="84" alt="08 logo">
+  <h1>08 Codex RPC</h1>
+  <p>Your Codex chat. Your model. Your Discord presence.</p>
+  <p>A pure-black Windows companion, built by <a href="https://github.com/082-0">08</a> with Codex.</p>
+  <p>
+    <a href="https://github.com/082-0/08-codex-rpc/releases/latest">Download for Windows</a>
+    &nbsp;·&nbsp;
+    <a href="#screenshots">Screenshots</a>
+    &nbsp;·&nbsp;
+    <a href="#build-from-source">Build from source</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/082-0/08-codex-rpc/issues">Report an issue</a>
+  </p>
+</div>
+
+## What it does
+
+08 Codex RPC puts your latest local Codex chat title, selected model, reasoning level, and a custom user label on your Discord activity. Open the portable EXE while Discord desktop and Codex are running. No Developer Portal setup or bot token is needed.
+
+- Live model and reasoning updates, such as `GPT-6 Sol High`.
+- Chat title and editable user label.
+- Separate switches for chat title, model, and elapsed time.
+- Pause, resume, reconnect, and tray controls.
+- Codex Desktop and CLI process detection on Windows.
+- Black interface with a white-and-black 08 app icon.
+
+The reader follows the latest updated local chat. It does not track which chat window has keyboard focus.
+
+## Screenshots
+
+### Dashboard
+
+Captured from the running 1.0.2 app with Discord connected. Model names in screenshots reflect the selected model at capture time.
+
+![08 Codex RPC dashboard](docs/screenshots/dashboard.png)
+
+### Discord activity
+
+An earlier live Discord card showing the chat title, model, and label. Version 1.0.2 also includes the reasoning level.
+
+![Live Discord activity card](docs/screenshots/discord-presence.png)
+
+The dashboard's 08 card is a local preview. Discord uses the shared Codex application's title and artwork.
+
+## Run it
+
+1. Download `08-Codex-RPC-1.0.2-portable.exe` from [Releases](https://github.com/082-0/08-codex-rpc/releases/latest).
+2. Keep the Discord **desktop app** open and signed in.
+3. Open Codex, then double-click the EXE.
+4. Set your label and choose which details to show. Click **Save**.
+
+The app checks for activity about every 10 seconds. Closing its window keeps it in the system tray. Use the tray menu to pause or quit.
+
+Enable activity sharing in Discord's Activity Privacy settings if your card is hidden. Only one RPC instance can run at a time; quit an older copy from its tray menu before opening an update.
+
+## Privacy and local data
+
+Chat titles and the enabled model, reasoning level, label, and timer are sent to your local Discord client for display on your profile. Disable **Chat title** or pause presence before working on a chat whose name you want to keep private.
+
+The app reads Codex's local session index and, when available, the thread metadata database. Its fallback reads the tail of a session log to extract model and reasoning metadata; that log can contain message content, but prompts and messages are not included in the Discord activity. The app does not collect account credentials or send analytics.
+
+Settings stay in `%APPDATA%/eight-codex-rpc/settings.json`. Codex metadata is read from `CODEX_HOME`, when set, or your home `.codex` folder. Codex's internal file format may change between versions.
+
+## Build from source
+
+Use Windows x64 and Node.js 22.13 or later (with `node:sqlite` support).
+
+```sh
+git clone https://github.com/082-0/08-codex-rpc.git
+cd 08-codex-rpc
+npm ci
+npm test
+npm run build:win
+```
+
+The portable EXE is written to `dist/`. To run the desktop app from source, use `npm start`.
+
+The project uses Electron, electron-builder, plain HTML/CSS/JavaScript, and a small Discord IPC client. It does not need a separate Discord bot process.
+
+## Source map
+
+| Path | Purpose |
+| --- | --- |
+| `src/main.js` | Desktop window, settings, tray, and presence updates |
+| `src/session.js` | Codex chat, model, and reasoning metadata |
+| `src/detect.js` | Windows Codex process detection |
+| `src/ipc.js` | Local Discord IPC connection |
+| `src/ui.*` | Black dashboard and controls |
+| `assets/` | White-and-black 08 icons |
+| `scripts/generate-icon.ps1` | Rebuild the app icons on Windows |
+| `test/` | Metadata, detection, and IPC regression tests |
+
+See [CHANGELOG.md](CHANGELOG.md) for release notes.
+
+## Credits and application identity
+
+Created by **08 / [082-0](https://github.com/082-0)** with Codex. Discord: `082_0`.
+
+Inspired by the feature idea in [inerthel-agi/codex-rpc](https://github.com/inerthel-agi/codex-rpc). This project uses its own implementation. The bundled Discord application ID is public metadata from the shared Codex presence application; it is not a token. That application's identity and artwork belong to their respective owner, and continued availability is outside this project's control.
+
+This project is independent of OpenAI and Discord.

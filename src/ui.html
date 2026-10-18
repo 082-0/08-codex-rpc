@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'">
+  <title>08 Codex RPC</title>
+  <link rel="stylesheet" href="ui.css">
+  <script src="ui.js" defer></script>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="brand"><span>08 <small>CODEX RPC</small></span></div>
+      <span class="tag">LIVE PRESENCE</span>
+    </header>
+    <h1>Your Codex activity.</h1>
+    <p class="intro">The chat title, model, and your label on Discord.</p>
+    <section class="status-row" aria-label="Connection status">
+      <div class="status"><i id="codex-dot"></i><span>Codex</span><strong id="codex-status">Checking…</strong></div>
+      <div class="status"><i id="discord-dot"></i><span>Discord</span><strong id="discord-status">Connecting…</strong></div>
+      <button type="button" id="reconnect" class="subtle">Reconnect</button>
+    </section>
+    <div class="columns">
+      <section class="panel">
+        <p class="eyebrow">SETTINGS</p>
+        <h2>What people see</h2>
+        <label class="field-label" for="userLabel">Your label</label>
+        <input id="userLabel" maxlength="40" placeholder="@8_08">
+        <div class="toggles">
+          <label class="toggle-row"><span><strong>Chat title</strong><small>Shows the latest Codex chat name</small></span><input id="showChat" type="checkbox"></label>
+          <label class="toggle-row"><span><strong>Model</strong><small>Shows the model selected in that chat</small></span><input id="showModel" type="checkbox"></label>
+          <label class="toggle-row"><span><strong>Timer</strong><small>Shows how long Codex has been open</small></span><input id="showElapsed" type="checkbox"></label>
+        </div>
+        <div class="actions"><button type="button" class="primary" id="save">Save</button><button type="button" class="subtle" id="pause">Pause</button></div>
+        <p class="feedback" id="feedback" aria-live="polite"></p>
+      </section>
+      <section class="panel preview">
+        <p class="eyebrow">DISCORD PREVIEW</p>
+        <h2>Currently showing</h2>
+        <div class="discord-card"><div class="card-icon">08</div><div><small>PLAYING</small><strong>Codex</strong><span id="preview-details">Using Codex</span><span id="preview-state">@8_08</span><em id="preview-time">Timer on</em></div></div>
+        <p class="note">Chat titles are public when enabled. Prompts and messages stay on your computer.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
