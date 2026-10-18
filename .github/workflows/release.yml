@@ -66,10 +66,6 @@ jobs:
           pattern: desktop-*
           merge-multiple: true
           path: artifacts
-      - name: Create checksums
-        working-directory: artifacts
-        run: sha256sum * > ../SHA256SUMS.txt
-      - run: mv SHA256SUMS.txt artifacts/
       - name: Publish downloads
         env:
           GH_TOKEN: ${{ github.token }}

@@ -24,4 +24,5 @@ macOS packages use ad-hoc signing and are not Apple-notarized. These packages ar
 - Remove the cursor and blue glow from the dashboard screenshot.
 - Cross-platform process and local IPC regression tests.
 
-SHA256SUMS.txt includes the checksums for every downloadable package. The README contains setup, build, and privacy details.
+The README contains setup, build, and privacy details.
+
