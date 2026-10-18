@@ -79,23 +79,64 @@ function readTail(file, bytes = 8 * 1024 * 1024) {
   } finally { fs.closeSync(fd); }
 }
 
+function selectedThreadId(text) {
+  let id = '';
+  for (const line of text.split(/\r?\n/)) {
+    if (!line.includes('thread_stream_view_activity_changed active=true')) continue;
+    const match = line.match(/\bconversationId=([a-f0-9-]{36})\b/);
+    if (match && line.includes('rendererWindowAppearance=primary')) id = match[1];
+  }
+  return id;
+}
+
+function desktopSelection(logsRoot) {
+  try {
+    const years = fs.readdirSync(logsRoot, { withFileTypes: true }).filter(e => e.isDirectory()).map(e => e.name).sort().reverse();
+    const files = [];
+    for (const year of years.slice(0, 2)) {
+      const y = path.join(logsRoot, year);
+      for (const month of fs.readdirSync(y, { withFileTypes: true }).filter(e => e.isDirectory()).map(e => e.name).sort().reverse().slice(0, 2)) {
+        const m = path.join(y, month);
+        for (const day of fs.readdirSync(m, { withFileTypes: true }).filter(e => e.isDirectory()).map(e => e.name).sort().reverse().slice(0, 3)) {
+          const d = path.join(m, day);
+          for (const name of fs.readdirSync(d)) if (/^codex-desktop-.*\.log$/.test(name)) {
+            const file = path.join(d, name);
+            files.push({ file, modified: fs.statSync(file).mtimeMs });
+          }
+        }
+      }
+    }
+    for (const { file } of files.sort((a, b) => b.modified - a.modified).slice(0, 5)) {
+      const id = selectedThreadId(readTail(file, 1024 * 1024));
+      if (id) return id;
+    }
+  } catch { /* Desktop log may be unavailable. */ }
+  return '';
+}
+
 let cachedId = '';
 let cachedFile = null;
-function readSession(root = process.env.CODEX_HOME || path.join(os.homedir(), '.codex')) {
+function readSession(root = process.env.CODEX_HOME || path.join(os.homedir(), '.codex'),
+  logsRoot = path.join(process.env.LOCALAPPDATA || path.join(os.homedir(), 'AppData', 'Local'), 'Codex', 'Logs')) {
   try {
     const row = latestIndex(fs.readFileSync(path.join(root, 'session_index.jsonl'), 'utf8'));
     if (!row) return { title: '', model: '', effort: '', modelLabel: '' };
+    const selectedId = process.platform === 'win32' ? desktopSelection(logsRoot) : '';
+    let id = row.id;
+    if (selectedId) {
+      try { if (liveSelection(root, selectedId)) id = selectedId; } catch { /* Use the latest indexed chat. */ }
+    }
     try {
-      const live = liveSelection(root, row.id);
+      const live = liveSelection(root, id);
       if (live && live.model) return { title: live.title || row.thread_name, model: live.model, effort: live.effort, modelLabel: formatModel(live.model, live.effort) };
     } catch { /* Fall back to the session log if the live database is unavailable. */ }
-    if (row.id !== cachedId) {
-      cachedId = row.id;
-      cachedFile = findRollout(path.join(root, 'sessions'), row.id);
+    if (id !== cachedId) {
+      cachedId = id;
+      cachedFile = findRollout(path.join(root, 'sessions'), id);
     }
     const selection = cachedFile ? lastSelection(readTail(cachedFile)) : { model: '', effort: '' };
-    return { title: row.thread_name, ...selection, modelLabel: formatModel(selection.model, selection.effort) };
+    return { title: id === row.id ? row.thread_name : '', ...selection, modelLabel: formatModel(selection.model, selection.effort) };
   } catch { return { title: '', model: '', effort: '', modelLabel: '' }; }
 }
 
-module.exports = { latestIndex, lastSelection, formatModel, readSession };
+module.exports = { latestIndex, lastSelection, formatModel, selectedThreadId, readSession };

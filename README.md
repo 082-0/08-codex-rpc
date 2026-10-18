@@ -16,7 +16,7 @@
 
 ## What it does
 
-08 Codex RPC puts your latest local Codex chat title, selected model, reasoning level, and a custom user label on your Discord activity. Open the app while Discord desktop and Codex are running. No Developer Portal setup or bot token is needed.
+08 Codex RPC puts your Codex chat title, selected model, reasoning level, and a custom user label on your Discord activity. On Windows, it follows the chat currently open in Codex Desktop; if that selection is unavailable, it uses the latest local chat. Open the app while Discord desktop and Codex are running. No Developer Portal setup or bot token is needed.
 
 - Live model and reasoning updates, such as `GPT-6 Sol High`.
 - Chat title and editable user label.

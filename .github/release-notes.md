@@ -1,4 +1,4 @@
-08 Codex RPC now has native packages for Windows, macOS, and Linux.
+08 Codex RPC follows the chat currently open in Codex Desktop on Windows. Switching chats updates the Discord activity without needing to send a new message. If the desktop selection is unavailable, it falls back to the latest local chat.
 
 ## Choose your download
 
@@ -16,13 +16,9 @@ macOS packages use ad-hoc signing and are not Apple-notarized. These packages ar
 
 ## Changes
 
-- Native macOS and Linux Codex process detection.
-- Discord Unix socket discovery, including Linux Flatpak and Snap socket locations.
-- Windows named-pipe support retained.
-- White-and-black 08 app icons across platforms.
-- Remove the Codex authorship credit from the README.
-- Remove the cursor and blue glow from the dashboard screenshot.
-- Cross-platform process and local IPC regression tests.
+- Fix Windows chat switching by reading only the active chat ID from Codex Desktop's local activity log, then getting its title and model from Codex metadata.
+- Keep the latest-chat fallback for CLI use and when desktop selection is unavailable.
+- Add a regression test where the visible chat differs from the most recently edited chat.
 
 The README contains setup, build, and privacy details.
 
