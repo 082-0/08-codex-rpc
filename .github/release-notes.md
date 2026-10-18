@@ -7,7 +7,7 @@
 | Windows x64 | `portable.exe` |
 | Mac with Apple silicon | `mac-arm64.dmg` or `.zip` |
 | Intel Mac | `mac-x64.dmg` or `.zip` |
-| Linux x64 | `linux-x64.AppImage` or `.tar.gz` |
+| Linux x64 | `linux-x86_64.AppImage` or `linux-x64.tar.gz` |
 | Linux ARM64 | `linux-arm64.AppImage` or `.tar.gz` |
 
 Keep Discord desktop and Codex open, then launch 08 Codex RPC. On Linux, make the AppImage executable before launching it. The tar archive is an alternative when AppImage/FUSE support is unavailable.

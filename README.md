@@ -57,7 +57,7 @@ The app checks for activity about every 10 seconds. On Windows and macOS, closin
 | Windows x64 | Portable `.exe` |
 | macOS Apple silicon | `mac-arm64.dmg` or `.zip` |
 | macOS Intel | `mac-x64.dmg` or `.zip` |
-| Linux x64 | `linux-x64.AppImage` or `.tar.gz` |
+| Linux x64 | `linux-x86_64.AppImage` or `linux-x64.tar.gz` |
 | Linux ARM64 | `linux-arm64.AppImage` or `.tar.gz` |
 
 On macOS, open the DMG and drag the app into Applications, or extract the ZIP. Mac packages are ad-hoc signed and are not Apple-notarized. On Linux, mark the AppImage executable before opening it; the tar archive is available for systems without AppImage/FUSE support. Keep the Linux window open while sharing activity. Native Discord installations are preferred; sandboxed installations can restrict socket access.
