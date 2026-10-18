@@ -5,12 +5,12 @@
 | System | Download |
 | --- | --- |
 | Windows x64 | `portable.exe` |
-| Mac with Apple silicon | `mac-arm64.dmg` or `.zip` |
-| Intel Mac | `mac-x64.dmg` or `.zip` |
-| Linux x64 | `linux-x86_64.AppImage` or `linux-x64.tar.gz` |
-| Linux ARM64 | `linux-arm64.AppImage` or `.tar.gz` |
+| Mac with Apple silicon | `mac-arm64.dmg` |
+| Intel Mac | `mac-x64.dmg` |
+| Linux x64 | `linux-x86_64.AppImage` |
+| Linux ARM64 | `linux-arm64.AppImage` |
 
-Keep Discord desktop and Codex open, then launch 08 Codex RPC. On Linux, make the AppImage executable before launching it. The tar archive is an alternative when AppImage/FUSE support is unavailable.
+Keep Discord desktop and Codex open, then launch 08 Codex RPC. On Linux, make the AppImage executable before launching it.
 
 macOS packages use ad-hoc signing and are not Apple-notarized. These packages are built and tested on GitHub's native platform runners; Discord presence has been checked interactively on Windows, while interactive macOS/Linux Discord sessions have not yet been verified.
 

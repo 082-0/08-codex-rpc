@@ -41,8 +41,7 @@
       "identity": "-",
       "hardenedRuntime": false,
       "target": [
-        "dmg",
-        "zip"
+        "dmg"
       ],
       "artifactName": "08-Codex-RPC-${version}-mac-${arch}.${ext}"
     },
@@ -50,8 +49,7 @@
       "category": "Development",
       "icon": "assets/08.png",
       "target": [
-        "AppImage",
-        "tar.gz"
+        "AppImage"
       ],
       "artifactName": "08-Codex-RPC-${version}-linux-${arch}.${ext}",
       "executableName": "08-codex-rpc"
