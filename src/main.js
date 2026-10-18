@@ -112,6 +112,8 @@ function updateTrayMenu() {
 }
 
 app.on('second-instance', showWindow);
+app.on('activate', showWindow);
+app.on('window-all-closed', () => { if (process.platform === 'linux') app.quit(); });
 app.whenReady().then(() => {
   app.setAppUserModelId('dev.eight.codexrpc');
   loadSettings();
@@ -126,8 +128,9 @@ app.whenReady().then(() => {
   });
   window.removeMenu();
   window.loadFile(path.join(__dirname, 'ui.html'));
-  window.on('close', (event) => { if (!quitting) { event.preventDefault(); window.hide(); } });
-  tray = new Tray(icon.resize({ width: 32, height: 32 }));
+  window.on('close', (event) => { if (!quitting && process.platform !== 'linux') { event.preventDefault(); window.hide(); } });
+  tray = new Tray(icon.resize({ width: process.platform === 'darwin' ? 18 : 32, height: process.platform === 'darwin' ? 18 : 32 }));
+  tray.on('click', showWindow);
   tray.on('double-click', showWindow);
   updateTrayMenu();
   ipcMain.handle('snapshot', () => snapshot());

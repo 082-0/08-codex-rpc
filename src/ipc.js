@@ -1,7 +1,16 @@
 'use strict';
 
 const net = require('node:net');
+const path = require('node:path');
+const os = require('node:os');
 const { randomUUID } = require('node:crypto');
+
+function socketPaths(platform = process.platform, env = process.env) {
+  if (platform === 'win32') return Array.from({ length: 10 }, (_, slot) => `\\\\?\\pipe\\discord-ipc-${slot}`);
+  const roots = [...new Set([env.XDG_RUNTIME_DIR, env.TMPDIR, env.TMP, env.TEMP, os.tmpdir(), '/tmp'].filter((root) => root && path.posix.isAbsolute(root)))];
+  const locations = roots.flatMap((root) => platform === 'linux' ? [root, path.posix.join(root, 'app/com.discordapp.Discord'), path.posix.join(root, 'snap.discord')] : [root]);
+  return locations.flatMap((root) => Array.from({ length: 10 }, (_, slot) => path.posix.join(root, `discord-ipc-${slot}`)));
+}
 
 function packet(opcode, payload) {
   const body = Buffer.from(JSON.stringify(payload), 'utf8');
@@ -32,8 +41,8 @@ class DiscordConnection {
     this.clientId = clientId;
     this.connecting = true;
     this.onStatus('connecting');
-    for (let slot = 0; slot < 10; slot++) {
-      const opened = await this.open(`\\\\?\\pipe\\discord-ipc-${slot}`).catch(() => false);
+    for (const pipe of socketPaths()) {
+      const opened = await this.open(pipe).catch(() => false);
       if (opened) return;
     }
     this.connecting = false;
@@ -43,11 +52,13 @@ class DiscordConnection {
   open(pipe) {
     return new Promise((resolve) => {
       const candidate = net.createConnection(pipe);
+      candidate.setTimeout(1500, () => candidate.destroy());
       let settled = false;
       const finish = (value) => {
         if (!settled) { settled = true; resolve(value); }
       };
       candidate.once('connect', () => {
+        candidate.setTimeout(0);
         this.socket = candidate;
         this.pending = Buffer.alloc(0);
         candidate.write(packet(0, { v: 1, client_id: this.clientId }));
@@ -111,4 +122,4 @@ class DiscordConnection {
   }
 }
 
-module.exports = { DiscordConnection, packet };
+module.exports = { DiscordConnection, packet, socketPaths };

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0
+
+- Native macOS and Linux process detection and Discord Unix socket support.
+- macOS DMG/ZIP and Linux AppImage/tar packages for x64 and ARM64.
+- Native GitHub Actions build and release pipeline for all supported systems.
+- Cross-platform IPC and process detection tests.
+- Remove the README's Codex authorship credit and screenshot cursor.
+
 ## 1.0.2
 
 - Read the latest model and reasoning setting from Codex's local thread metadata.
