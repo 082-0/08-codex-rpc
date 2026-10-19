@@ -16,7 +16,7 @@
 
 ## What it does
 
-08 Codex RPC puts your Codex chat title, selected model, reasoning level, and a custom user label on your Discord activity. On Windows, it follows the chat currently open in Codex Desktop; if that selection is unavailable, it uses the latest local chat. Open the app while Discord desktop and Codex are running. No Developer Portal setup or bot token is needed.
+08 Codex RPC puts your Codex chat title, selected model, reasoning level, and a custom user label on your Discord activity. It follows the chat currently open in Codex Desktop on Windows, macOS, and Linux when the desktop activity log is available. Without a desktop selection, it uses the latest local chat. Open the app while Discord desktop and Codex are running. No Developer Portal setup or bot token is needed.
 
 - Live model and reasoning updates, such as `GPT-6 Sol High`.
 - Chat title and editable user label.
@@ -25,7 +25,7 @@
 - Codex Desktop detection on Windows/macOS, and CLI detection on Windows/macOS/Linux.
 - Black interface with a white-and-black 08 app icon.
 
-The reader follows the latest updated local chat. It does not track which chat window has keyboard focus.
+The reader follows the selected desktop chat, even when you switch to an older conversation without sending a message. It does not track keyboard focus between multiple Codex windows. CLI sessions use the latest updated local chat.
 
 ## Screenshots
 
@@ -70,7 +70,7 @@ Enable activity sharing in Discord's Activity Privacy settings if your card is h
 
 Chat titles and the enabled model, reasoning level, label, and timer are sent to your local Discord client for display on your profile. Disable **Chat title** or pause presence before working on a chat whose name you want to keep private.
 
-The app reads Codex's local session index and, when available, the thread metadata database. Its fallback reads the tail of a session log to extract model and reasoning metadata; that log can contain message content, but prompts and messages are not included in the Discord activity. The app does not collect account credentials or send analytics.
+The app reads Codex Desktop's local activity logs for selected chat IDs, plus Codex's local session index and, when available, the thread metadata database. Its fallback reads the tail of a session log to extract model and reasoning metadata; that log can contain message content, but prompts and messages are not included in the Discord activity. The app does not collect account credentials or send analytics.
 
 Settings stay in Electron's per-user app-data directory: `%APPDATA%/eight-codex-rpc` on Windows, `~/Library/Application Support/eight-codex-rpc` on macOS, and `$XDG_CONFIG_HOME/eight-codex-rpc` (normally `~/.config/eight-codex-rpc`) on Linux. Codex metadata is read from `CODEX_HOME`, when set, or your home `.codex` folder. Codex's internal file format may change between versions.
 
@@ -114,3 +114,4 @@ Created by **08 / [082-0](https://github.com/082-0)**. Discord: `082_0`.
 Inspired by the feature idea in [inerthel-agi/codex-rpc](https://github.com/inerthel-agi/codex-rpc). This project uses its own implementation. The bundled Discord application ID is public metadata from the shared Codex presence application; it is not a token. That application's identity and artwork belong to their respective owner, and continued availability is outside this project's control.
 
 This project is independent of OpenAI and Discord.
+
