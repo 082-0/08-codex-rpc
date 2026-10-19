@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.2
+
+- Follow the selected Codex Desktop chat on Windows, macOS, and Linux, including switches to older chats.
+- Discover packaged Windows logs and native macOS/Linux desktop log locations.
+- Clear the displayed chat after a desktop deactivation event, and recognize current ChatGPT desktop processes.
+- Keep the latest local chat as a fallback when no desktop selection is available.
+
 ## 1.1.0
 
 - Native macOS and Linux process detection and Discord Unix socket support.
@@ -22,3 +29,4 @@
 - Pure-black dashboard with live presence preview.
 - Chat-title, model, label, and elapsed-time controls.
 - Portable Windows build, tray controls, and Discord IPC connection.
+
