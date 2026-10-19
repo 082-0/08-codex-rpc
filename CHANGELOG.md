@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.3
+
+- Provide one download per operating system: Windows portable EXE, universal macOS DMG, and Linux archive with an automatic architecture launcher.
+- Keep both x64 and ARM64 Linux support in the single Linux download.
+
 ## 1.1.2
 
 - Follow the selected Codex Desktop chat on Windows, macOS, and Linux, including switches to older chats.
