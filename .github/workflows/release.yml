@@ -37,6 +37,18 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      - name: Verify Linux launcher
+        if: matrix.platform == 'linux'
+        shell: bash
+        run: |
+          sh -n scripts/run-linux.sh
+          temp_dir=$(mktemp -d)
+          cp scripts/run-linux.sh "$temp_dir/08-Codex-RPC"
+          arch=$(uname -m)
+          if [ "$arch" = aarch64 ]; then arch=arm64; fi
+          printf '#!/bin/sh\nprintf "%%s" "$1"\n' > "$temp_dir/test-linux-${arch}.AppImage"
+          chmod +x "$temp_dir/test-linux-${arch}.AppImage"
+          test "$("$temp_dir/08-Codex-RPC" probe)" = probe
       - name: Build native package
         run: npx electron-builder --${{ matrix.platform }} --${{ matrix.arch }} --publish never
         env:
@@ -75,6 +87,7 @@ jobs:
           chmod +x linux-package/08-Codex-RPC linux-package/*.AppImage
           tar -czf "artifacts/08-Codex-RPC-${version}-linux.tar.gz" -C linux-package .
           rm -- artifacts/*-linux-*.AppImage
+          test "$(find artifacts -maxdepth 1 -type f | wc -l)" -eq 3
       - name: Publish downloads
         env:
           GH_TOKEN: ${{ github.token }}
