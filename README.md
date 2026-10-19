@@ -55,12 +55,10 @@ The app checks for activity about every 10 seconds. On Windows and macOS, closin
 | System | Package |
 | --- | --- |
 | Windows x64 | Portable `.exe` |
-| macOS Apple silicon | `mac-arm64.dmg` |
-| macOS Intel | `mac-x64.dmg` |
-| Linux x64 | `linux-x86_64.AppImage` |
-| Linux ARM64 | `linux-arm64.AppImage` |
+| macOS (Apple silicon or Intel) | `mac.dmg` |
+| Linux (x64 or ARM64) | `linux.tar.gz` |
 
-On macOS, open the DMG and drag the app into Applications. Mac packages are ad-hoc signed and are not Apple-notarized. On Linux, mark the AppImage executable before opening it. Keep the Linux window open while sharing activity. Native Discord installations are preferred; sandboxed installations can restrict socket access.
+On macOS, open the DMG and drag the app into Applications. The universal Mac package is ad-hoc signed and is not Apple-notarized. On Linux, extract the archive and run `./08-Codex-RPC` from its folder. The launcher chooses the x64 or ARM64 AppImage automatically. Keep the Linux window open while sharing activity. Native Discord installations are preferred; sandboxed installations can restrict socket access.
 
 Each platform is built and tested on its native GitHub Actions runner. Interactive Discord presence has been verified on Windows; macOS/Linux interactive Discord sessions have not yet been checked.
 
@@ -88,7 +86,7 @@ npm run build:win
 
 The portable EXE is written to `dist/`. To run the desktop app from source, use `npm start`.
 
-For macOS use `npm run build:mac`; for Linux use `npm run build:linux`. These build x64 and ARM64 packages. GitHub Actions also builds all supported packages when a version tag is pushed.
+For macOS use `npm run build:mac` to create a universal DMG; for Linux use `npm run build:linux` to create both CPU-specific AppImages. GitHub Actions bundles the Linux packages into one download when a version tag is pushed.
 
 The project uses Electron, electron-builder, plain HTML/CSS/JavaScript, and a small Discord IPC client. It does not need a separate Discord bot process.
 
