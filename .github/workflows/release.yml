@@ -22,10 +22,7 @@ jobs:
             arch: x64
           - runner: macos-latest
             platform: mac
-            arch: arm64
-          - runner: macos-15-intel
-            platform: mac
-            arch: x64
+            arch: universal
           - runner: ubuntu-24.04
             platform: linux
             arch: x64
@@ -66,6 +63,18 @@ jobs:
           pattern: desktop-*
           merge-multiple: true
           path: artifacts
+      - name: Bundle Linux architectures
+        env:
+          RELEASE_VERSION: ${{ github.ref_name }}
+        run: |
+          version="${RELEASE_VERSION#v}"
+          mkdir -p linux-package
+          cp "artifacts/08-Codex-RPC-${version}-linux-x86_64.AppImage" linux-package/
+          cp "artifacts/08-Codex-RPC-${version}-linux-arm64.AppImage" linux-package/
+          cp scripts/run-linux.sh linux-package/08-Codex-RPC
+          chmod +x linux-package/08-Codex-RPC linux-package/*.AppImage
+          tar -czf "artifacts/08-Codex-RPC-${version}-linux.tar.gz" -C linux-package .
+          rm -- artifacts/*-linux-*.AppImage
       - name: Publish downloads
         env:
           GH_TOKEN: ${{ github.token }}
