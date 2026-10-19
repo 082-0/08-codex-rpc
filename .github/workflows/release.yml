@@ -44,6 +44,7 @@ jobs:
           sh -n scripts/run-linux.sh
           temp_dir=$(mktemp -d)
           cp scripts/run-linux.sh "$temp_dir/08-Codex-RPC"
+          chmod +x "$temp_dir/08-Codex-RPC"
           arch=$(uname -m)
           if [ "$arch" = aarch64 ]; then arch=arm64; fi
           printf '#!/bin/sh\nprintf "%%s" "$1"\n' > "$temp_dir/test-linux-${arch}.AppImage"
