@@ -9,7 +9,9 @@ function classify(records) {
   for (const item of list) {
     const path = String(item.ExecutablePath || '').toLowerCase().replaceAll('\\', '/');
     const line = String(item.CommandLine || '').toLowerCase().replaceAll('\\', '/');
-    if (path.includes('/openai.codex_') || path.includes('/openai/codex/bin/') || path.includes('/programs/codex/') || /\/codex\.app\/contents\//.test(path + ' ' + line)) desktop = true;
+    if (path.includes('/openai.codex_') || path.includes('/openai/codex/bin/') || path.includes('/programs/codex/') ||
+        /\/(?:codex|chatgpt)\.app\/contents\//.test(path + ' ' + line) ||
+        /^\/usr\/lib\/chatgpt\/chatgpt$/.test(path) || /^\/opt\/codex-desktop\//.test(path)) desktop = true;
     else if (path.includes('/@openai/codex/') || /(?:^|\/)codex(?:\.exe)?$/.test(path) || /\/@openai\/codex\/[^\s]*codex(?:\.js|\.exe)?(?:\s|$)/.test(line)) cli = true;
   }
   if (desktop && cli) return 'both';
@@ -33,7 +35,7 @@ function detectCodex(platform = process.platform, run = execFile) {
       });
       return;
     }
-    const script = "Get-CimInstance Win32_Process -Filter \"Name = 'codex.exe'\" | Select-Object ExecutablePath,CommandLine | ConvertTo-Json -Compress";
+    const script = "Get-CimInstance Win32_Process -Filter \"Name = 'codex.exe' OR Name = 'ChatGPT.exe'\" | Select-Object ExecutablePath,CommandLine | ConvertTo-Json -Compress";
     run('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', script],
       { windowsHide: true, timeout: 7000, maxBuffer: 1024 * 1024 }, (error, stdout) => {
         if (error || !stdout.trim()) { resolve('off'); return; }
@@ -43,3 +45,4 @@ function detectCodex(platform = process.platform, run = execFile) {
 }
 
 module.exports = { classify, detectCodex, parseProcessLines };
+
